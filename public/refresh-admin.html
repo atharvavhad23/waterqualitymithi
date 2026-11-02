@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Refresh Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background: white;
+            color: #333;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            transform: scale(1.05);
+        }
+        .info {
+            margin: 20px 0;
+            padding: 15px;
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 Admin Access Updated!</h1>
+        <div class="info">
+            <strong>✅ Your account has been upgraded to admin!</strong><br><br>
+            Click the button below to logout and login again to get admin access.
+        </div>
+        <button onclick="refreshLogin()">Logout & Login as Admin</button>
+    </div>
+
+    <script>
+        function refreshLogin() {
+            // Clear all localStorage
+            localStorage.clear();
+            
+            // Redirect to quick login
+            window.location.href = '/quick-login.html';
+        }
+        
+        // Auto-execute after 3 seconds
+        setTimeout(() => {
+            document.querySelector('button').textContent = 'Refreshing in 3...';
+        }, 0);
+        
+        setTimeout(() => {
+            document.querySelector('button').textContent = 'Refreshing in 2...';
+        }, 1000);
+        
+        setTimeout(() => {
+            document.querySelector('button').textContent = 'Refreshing in 1...';
+        }, 2000);
+        
+        setTimeout(() => {
+            refreshLogin();
+        }, 3000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+{
+  "source": "MPCB_Mithi_River.pdf",
+  "station_count": 1,
+  "period_count": 92,
+  "rows": 92,
+  "missing_by_column": {
+    "date": 0,
+    "station": 0,
+    "pH": 0,
+    "DO": 32,
+    "BOD": 1,
+    "fecal_coliform": 0,
+    "total_coliform": 0,
+    "quality_status": 2,
+    "source_document": 0,
+    "source_url": 0,
+    "source_pages": 0
+  },
+  "classification": {
+    "rows": 56,
+    "train_rows": 39,
+    "test_rows": 9,
+    "classes_train": {
+      "Non Complying": 38,
+      "Complying": 1
+    },
+    "classes_test": {
+      "Non Complying": 9
+    },
+    "majority_baseline": {
+      "balanced_accuracy": 1.0,
+      "macro_f1": 1.0
+    },
+    "logistic_regression": {
+      "balanced_accuracy": 1.0,
+      "macro_f1": 1.0
+    }
+  },
+  "regression_bod": {
+    "rows": 89,
+    "train_rows": 62,
+    "test_rows": 14,
+    "persistence_baseline": {
+      "mae": 34.42857142857143,
+      "rmse": 60.42705165262137,
+      "r2": -0.47660311958405543
+    },
+    "ridge_regression": {
+      "mae": 24.720788638970884,
+      "rmse": 49.08055645594083,
+      "r2": 0.025863249325617232
+    }
+  },
+  "model_suitability": {
+    "classical_ml": "Suitable for cautious baseline use with chronological validation.",
+    "deep_learning": "Not recommended for this single-station, roughly monthly sample without substantially more real stations/years.",
+    "hybrid": "Not recommended for final claims; CEEMDAN-BiLSTM-XGBoost would be high variance with this sample size."
+  }
+}

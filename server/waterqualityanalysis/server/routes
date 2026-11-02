@@ -1,0 +1,53 @@
+The directory `/waterqualityanalysis/waterqualityanalysis/server/routes` is intended to contain API route handlers for the Express server. Since you want to set up a PostgreSQL database, I will create a sample route file that demonstrates how to interact with the database. 
+
+Here is the content for a new route file, which I will name `data.ts`, to handle basic CRUD operations:
+
+/waterqualityanalysis/waterqualityanalysis/server/routes/data.ts
+
+import { RequestHandler } from "express";
+import { Pool } from "pg"; // Import the Pool class from pg
+import { MyDataResponse } from "@shared/api"; // Optional: for type safety
+
+const pool = new Pool({
+  user: 'your_username', // Replace with your database username
+  host: 'localhost', // Replace with your database host
+  database: 'your_database', // Replace with your database name
+  password: 'your_password', // Replace with your database password
+  port: 5432, // Default PostgreSQL port
+});
+
+// Handler to get data
+export const getData: RequestHandler = async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM your_table'); // Replace with your table name
+    const response: MyDataResponse = {
+      data: result.rows,
+    };
+    res.json(response);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+// Handler to create data
+export const createData: RequestHandler = async (req, res) => {
+  const { field1, field2 } = req.body; // Replace with your fields
+  try {
+    const result = await pool.query('INSERT INTO your_table (field1, field2) VALUES ($1, $2) RETURNING *', [field1, field2]);
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+// Export the handlers
+export default {
+  getData,
+  createData,
+}; 
+
+Make sure to replace placeholders like `your_username`, `your_database`, `your_password`, and `your_table` with actual values relevant to your PostgreSQL setup. 
+
+Next, you will need to register this route in your `server/index.ts` file.

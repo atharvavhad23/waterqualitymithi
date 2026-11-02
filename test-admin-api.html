@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin API Test - Water Quality Analysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .test-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .result {
+            background: #f7fafc;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .success {
+            color: #48bb78;
+            font-weight: bold;
+        }
+        
+        .error {
+            color: #f56565;
+            font-weight: bold;
+        }
+        
+        .info {
+            background: #e6fffa;
+            border-left: 4px solid #38b2ac;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+        
+        input {
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            margin: 5px;
+            font-size: 14px;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Admin Panel API Test Suite</h1>
+        
+        <!-- Login Section -->
+        <div class="test-section">
+            <h2>🔑 Step 1: Login (Get Token)</h2>
+            <div class="info">
+                <strong>Test with:</strong> admin / admin123
+            </div>
+            <input type="text" id="username" placeholder="Username" value="admin">
+            <input type="password" id="password" placeholder="Password" value="admin123">
+            <button class="btn" onclick="testLogin()">Login & Get Token</button>
+            <div id="login-result" class="result" style="display: none;"></div>
+        </div>
+        
+        <!-- Admin Dashboard Stats -->
+        <div class="test-section">
+            <h2>📊 Step 2: Admin Dashboard Stats</h2>
+            <button class="btn" onclick="testAdminDashboard()">Get Dashboard Stats</button>
+            <div id="dashboard-result" class="result" style="display: none;"></div>
+            <div id="dashboard-stats" class="stats-grid" style="display: none;"></div>
+        </div>
+        
+        <!-- User Management -->
+        <div class="test-section">
+            <h2>👥 Step 3: User Management</h2>
+            <button class="btn" onclick="testGetAllUsers()">Get All Users</button>
+            <button class="btn" onclick="testGetUserById()">Get User by ID</button>
+            <button class="btn" onclick="testUpdateUserRole()">Update User Role</button>
+            <button class="btn" onclick="testToggleUserStatus()">Toggle User Status</button>
+            <div id="users-result" class="result" style="display: none;"></div>
+        </div>
+        
+        <!-- Data Export -->
+        <div class="test-section">
+            <h2>📥 Step 4: Data Export</h2>
+            <div>
+                <input type="date" id="startDate" value="2020-01-01">
+                <input type="date" id="endDate" value="2024-12-31">
+                <button class="btn" onclick="testDataExport()">Export CSV Data</button>
+            </div>
+            <div id="export-result" class="result" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        let authToken = '';
+        
+        async function testLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const resultDiv = document.getElementById('login-result');
+            
+            try {
+                const response = await fetch('/api/login/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const data = await response.json();
+                resultDiv.style.display = 'block';
+                
+                if (response.ok && data.token) {
+                    authToken = data.token;
+                    resultDiv.innerHTML = `
+                        <div class="success">✅ Login Successful!</div>
+                        <div><strong>Token:</strong> ${data.token.substring(0, 30)}...</div>
+                        <div><strong>User:</strong> ${data.user.username} (${data.user.role})</div>
+                        <div><strong>Name:</strong> ${data.user.first_name} ${data.user.last_name}</div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `<div class="error">❌ Login Failed: ${data.error || 'Unknown error'}</div>`;
+                }
+            } catch (error) {
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+            }
+        }
+        
+        async function testAdminDashboard() {
+            if (!authToken) {
+                alert('Please login first!');
+                return;
+            }
+            
+            const resultDiv = document.getElementById('dashboard-result');
+            const statsDiv = document.getElementById('dashboard-stats');
+            
+            try {
+                // Test both endpoints
+                const [usersResponse, statsResponse] = await Promise.all([
+                    fetch('/api/admin/users/', {
+                        headers: { 'Authorization': `Bearer ${authToken}` }
+                    }),
+                    fetch('/api/dashboard/stats/', {
+                        headers: { 'Authorization': `Bearer ${authToken}` }
+                    })
+                ]);
+                
+                const usersData = await usersResponse.json();
+                const statsData = await statsResponse.json();
+                
+                resultDiv.style.display = 'block';
+                statsDiv.style.display = 'grid';
+                
+                if (usersResponse.ok && statsResponse.ok) {
+                    resultDiv.innerHTML = `
+                        <div class="success">✅ Admin Dashboard APIs Working!</div>
+                        <div><strong>Total Users:</strong> ${usersData.total || usersData.users?.length || 0}</div>
+                        <div><strong>Average WQI:</strong> ${statsData.avg_wqi?.toFixed(2) || 'N/A'}</div>
+                        <div><strong>Total Records:</strong> ${statsData.total_records?.toLocaleString() || 'N/A'}</div>
+                    `;
+                    
+                    statsDiv.innerHTML = `
+                        <div class="stat-card">
+                            <div class="stat-value">${usersData.total || usersData.users?.length || 0}</div>
+                            <div class="stat-label">Total Users</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${statsData.avg_wqi?.toFixed(1) || 'N/A'}</div>
+                            <div class="stat-label">Avg WQI</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${(statsData.total_records || 0).toLocaleString()}</div>
+                            <div class="stat-label">Data Points</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${statsData.location || 'Mithi River'}</div>
+                            <div class="stat-label">Location</div>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `<div class="error">❌ API Error</div>`;
+                    statsDiv.style.display = 'none';
+                }
+            } catch (error) {
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+                statsDiv.style.display = 'none';
+            }
+        }
+        
+        async function testGetAllUsers() {
+            if (!authToken) {
+                alert('Please login first!');
+                return;
+            }
+            
+            const resultDiv = document.getElementById('users-result');
+            
+            try {
+                const response = await fetch('/api/admin/users/', {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                
+                const data = await response.json();
+                resultDiv.style.display = 'block';
+                
+                if (response.ok) {
+                    const usersList = data.users || [];
+                    resultDiv.innerHTML = `
+                        <div class="success">✅ Retrieved ${usersList.length} users</div>
+                        <pre>${JSON.stringify(usersList, null, 2)}</pre>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `<div class="error">❌ Error: ${data.error || 'Unknown error'}</div>`;
+                }
+            } catch (error) {
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+            }
+        }
+        
+        async function testGetUserById() {
+            if (!authToken) {
+                alert('Please login first!');
+                return;
+            }
+            
+            const userId = prompt('Enter User ID to fetch:', '1');
+            if (!userId) return;
+            
+            const resultDiv = document.getElementById('users-result');
+            
+            try {
+                const response = await fetch(`/api/admin/users/${userId}/`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                
+                const data = await response.json();
+                resultDiv.style.display = 'block';
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `
+                        <div class="success">✅ User Details Retrieved</div>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `<div class="error">❌ Error: ${data.error || 'User not found'}</div>`;
+                }
+            } catch (error) {
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+            }
+        }
+        
+        async function testUpdateUserRole() {
+            if (!authToken) {
+                alert('Please login first!');
+                return;
+            }
+            
+            const userId = prompt('Enter User ID to update:', '2');
+            const newRole = prompt('Enter new role (admin/moderator/analyst/user):', 'moderator');
+            if (!userId || !newRole) return;
+            
+            const resultDiv = document.getElementById('users-result');
+            
+            try {
+                const response = await fetch(`/api/admin/users/${userId}/`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ role: newRole })
+                });
+                
+                const data = await response.json();
+                resultDiv.style.display = 'block';
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `
+                        <div class="success">✅ User Role Updated!</div>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `<div class="error">❌ Error: ${data.error || 'Update failed'}</div>`;
+                }
+            } catch (error) {
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+            }
+        }
+        
+        async function testToggleUserStatus() {
+            if (!authToken) {
+                alert('Please login first!');
+                return;
+            }
+            
+            const userId = prompt('Enter User ID to toggle status:', '2');
+            if (!userId) return;
+            
+            const resultDiv = document.getElementById('users-result');
+            
+            try {
+                const response = await fetch(`/api/admin/users/${userId}/`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ is_active: false })
+                });
+                
+                const data = await response.json();
+                resultDiv.style.display = 'block';
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `
+                        <div class="success">✅ User Status Toggled!</div>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `<div class="error">❌ Error: ${data.error || 'Update failed'}</div>`;
+                }
+            } catch (error) {
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+            }
+        }
+        
+        async function testDataExport() {
+            if (!authToken) {
+                alert('Please login first!');
+                return;
+            }
+            
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            const resultDiv = document.getElementById('export-result');
+            
+            try {
+                const url = `/api/export-data/?start=${startDate}&end=${endDate}`;
+                const response = await fetch(url, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                
+                resultDiv.style.display = 'block';
+                
+                if (response.ok) {
+                    const csvText = await response.text();
+                    const lines = csvText.split('\n');
+                    const recordCount = lines.length - 1; // Subtract header
+                    
+                    resultDiv.innerHTML = `
+                        <div class="success">✅ Data Export Successful!</div>
+                        <div><strong>Date Range:</strong> ${startDate} to ${endDate}</div>
+                        <div><strong>Records:</strong> ${recordCount.toLocaleString()}</div>
+                        <div><strong>Preview (first 5 lines):</strong></div>
+                        <pre>${lines.slice(0, 5).join('\n')}</pre>
+                        <button class="btn" onclick="downloadCSV('${startDate}', '${endDate}')">Download CSV</button>
+                    `;
+                    
+                    // Store CSV for download
+                    window.exportedCSV = csvText;
+                } else {
+                    const error = await response.json();
+                    resultDiv.innerHTML = `<div class="error">❌ Error: ${error.error || 'Export failed'}</div>`;
+                }
+            } catch (error) {
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+            }
+        }
+        
+        function downloadCSV(startDate, endDate) {
+            if (!window.exportedCSV) {
+                alert('No CSV data available. Please test export first.');
+                return;
+            }
+            
+            const blob = new Blob([window.exportedCSV], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `mithi_river_export_${startDate}_to_${endDate}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        }
+    </script>
+</body>
+</html>

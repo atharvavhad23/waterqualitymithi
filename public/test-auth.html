@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        h1 { text-align: center; }
+        .status {
+            font-size: 24px;
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .authenticated {
+            background: rgba(34, 197, 94, 0.3);
+            border: 2px solid #22c55e;
+        }
+        .not-authenticated {
+            background: rgba(239, 68, 68, 0.3);
+            border: 2px solid #ef4444;
+        }
+        button {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .info {
+            background: rgba(59, 130, 246, 0.2);
+            border-left: 4px solid #3b82f6;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .button-group {
+            text-align: center;
+        }
+        pre {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔒 Authentication Protection Test</h1>
+    
+    <div class="card">
+        <h2>Current Authentication Status</h2>
+        <div id="status" class="status"></div>
+        
+        <div id="token-info"></div>
+    </div>
+
+    <div class="card">
+        <h2>Test Authentication Protection</h2>
+        <div class="info">
+            <strong>How to test:</strong>
+            <ol>
+                <li>Check your current authentication status above</li>
+                <li>If authenticated, click "Clear Auth & Test" to remove token</li>
+                <li>Try accessing <a href="http://localhost:3000/dashboard" style="color: #60a5fa;">http://localhost:3000/dashboard</a></li>
+                <li>You should be redirected to the login page</li>
+            </ol>
+        </div>
+        
+        <div class="button-group">
+            <button onclick="clearAuth()">🗑️ Clear Auth & Test Protection</button>
+            <button onclick="testDashboard()">🚀 Try Access Dashboard</button>
+            <button onclick="goToLogin()">🔐 Go to Login</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>LocalStorage Contents</h2>
+        <pre id="localStorage-dump"></pre>
+    </div>
+
+    <script>
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const username = localStorage.getItem('username');
+            const role = localStorage.getItem('role');
+            
+            const statusDiv = document.getElementById('status');
+            const tokenInfo = document.getElementById('token-info');
+            
+            if (token) {
+                statusDiv.className = 'status authenticated';
+                statusDiv.innerHTML = '✅ AUTHENTICATED';
+                tokenInfo.innerHTML = `
+                    <div class="info">
+                        <strong>User:</strong> ${username || 'Unknown'}<br>
+                        <strong>Role:</strong> ${role || 'user'}<br>
+                        <strong>Token:</strong> ${token.substring(0, 30)}...
+                    </div>
+                `;
+            } else {
+                statusDiv.className = 'status not-authenticated';
+                statusDiv.innerHTML = '❌ NOT AUTHENTICATED';
+                tokenInfo.innerHTML = `
+                    <div class="info">
+                        No authentication token found. You should be redirected to login when accessing protected routes.
+                    </div>
+                `;
+            }
+        }
+
+        function dumpLocalStorage() {
+            const dump = {};
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                dump[key] = localStorage.getItem(key);
+            }
+            document.getElementById('localStorage-dump').textContent = JSON.stringify(dump, null, 2);
+        }
+
+        function clearAuth() {
+            if (confirm('This will clear your authentication and test the protection. Continue?')) {
+                localStorage.clear();
+                alert('✅ Authentication cleared! Now try accessing /dashboard');
+                location.reload();
+            }
+        }
+
+        function testDashboard() {
+            window.open('http://localhost:3000/dashboard', '_blank');
+        }
+
+        function goToLogin() {
+            window.location.href = 'http://localhost:3000/login';
+        }
+
+        // Run on load
+        checkAuth();
+        dumpLocalStorage();
+
+        // Refresh every 2 seconds
+        setInterval(() => {
+            checkAuth();
+            dumpLocalStorage();
+        }, 2000);
+    </script>
+</body>
+</html>

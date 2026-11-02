@@ -1,0 +1,17 @@
+field,type,required,description
+record_id,string,yes,Stable identifier assigned only after a source row is extracted.
+date,YYYY-MM period,yes,Sampling month and year exactly as reported; day is intentionally not invented when the source reports month only.
+station,string,yes,Official monitoring-station name exactly as reported.
+latitude,float,no,Station latitude when published by the source.
+longitude,float,no,Station longitude when published by the source.
+parameter,string,yes,Measured parameter name such as pH, DO, BOD, COD, TDS, turbidity, nitrate, or fecal_coliform.
+value,float,yes,Measured numeric value; never imputed.
+unit,string,yes,Unit exactly as reported or normalized with original unit retained in notes.
+source_document,string,yes,Report, portal export, paper, or official file name.
+source_url,string,yes,Stable URL or DOI used to retrieve the source.
+source_page,string,no,PDF page number or portal table/record reference.
+source_table,string,no,Source table, annex, sheet, or API field reference.
+method,string,no,Measurement or laboratory method when reported.
+qa_flag,string,yes,verified_source_value, questionable, duplicate, or needs_review.
+qualifier,string,no,BDL, missing, or another source qualifier; a BDL value is not converted to zero.
+notes,string,no,Provenance notes, qualifiers, detection limits, or unit conversions.

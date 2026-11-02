@@ -1,0 +1,160 @@
+================================================================================
+    COMPREHENSIVE ML MODEL COMPARISON REPORT
+    Water Quality Prediction - Mithi River, Mumbai
+================================================================================
+Generated: November 02, 2026 at 22:38:53
+Dataset: 400,000 samples (2000-2024)
+Test Set: 80,000 samples (20%)
+
+================================================================================
+PART 1: CLASSIFICATION MODELS COMPARISON
+================================================================================
+
+Task: Predict Water Quality Index (WQI) - Good/Moderate/Poor
+
+1.1 RANDOM FOREST CLASSIFIER
+--------------------------------------------------------------------------------
+Accuracy: 0.8936 (89.36%)
+F1-Score (Weighted): 0.8938
+F1-Score (Macro): 0.9059
+Precision (Weighted): 0.8940
+Recall (Weighted): 0.8936
+Training Time: 0.67 seconds
+Inference Time: 0.01 ms/sample
+
+Class-wise Performance:
+  Good:
+    Precision: 0.9864
+    Recall: 0.9713
+    F1-Score: 0.9788
+    Support: 1046
+  Moderate:
+    Precision: 0.8498
+    Recall: 0.8517
+    F1-Score: 0.8507
+    Support: 1780
+  Poor:
+    Precision: 0.8856
+    Recall: 0.8905
+    F1-Score: 0.8881
+    Support: 2174
+
+1.2 K-NEAREST NEIGHBORS (KNN) CLASSIFIER
+--------------------------------------------------------------------------------
+Optimal K: 11
+Accuracy: 0.8890 (88.90%)
+F1-Score (Weighted): 0.8893
+F1-Score (Macro): 0.9022
+Precision (Weighted): 0.8897
+Recall (Weighted): 0.8890
+Training Time: 0.06 seconds
+Inference Time: 0.03 ms/sample
+
+Class-wise Performance:
+  Good:
+    Precision: 0.9922
+    Recall: 0.9675
+    F1-Score: 0.9797
+    Support: 1046
+  Moderate:
+    Precision: 0.8416
+    Recall: 0.8478
+    F1-Score: 0.8447
+    Support: 1780
+  Poor:
+    Precision: 0.8797
+    Recall: 0.8850
+    F1-Score: 0.8824
+    Support: 2174
+
+1.3 CLASSIFICATION MODELS COMPARISON TABLE
+--------------------------------------------------------------------------------
+Metric                    Random Forest        KNN (K={best_k})     Winner         
+--------------------------------------------------------------------------------
+Accuracy                  0.8936 (89.36%)      0.8890 (88.90%)      RF             
+F1-Score (Weighted)       0.8938                0.8893                RF             
+F1-Score (Macro)          0.9059                0.9022                RF             
+Precision (Weighted)      0.8940                0.8897                RF             
+Recall (Weighted)         0.8936                0.8890                RF             
+Training Time (sec)       0.67                0.06                KNN            
+Inference Time (ms)       0.01                0.03                RF             
+
+1.4 CLASSIFICATION RECOMMENDATION
+--------------------------------------------------------------------------------
+[OK] WINNER: RANDOM FOREST (Wins: 6/7 metrics)
+
+Reasons:
+  • Higher accuracy: 89.36% vs 88.90%
+  • Better F1-Score (Weighted): 0.8938 vs 0.8893
+  • Faster inference: 0.01ms vs 0.03ms
+
+[OK] RECOMMENDATION: Use Random Forest for production deployment
+
+================================================================================
+PART 2: REGRESSION MODELS COMPARISON
+================================================================================
+
+Task: Predict TDS, BOD, and COD values
+
+--- TDS PREDICTION ---
+Linear Regression (with Polynomial Features):
+--- BOD PREDICTION ---
+Linear Regression (with Polynomial Features):
+--- COD PREDICTION ---
+Linear Regression (with Polynomial Features):
+  R² Score: 0.9669
+  RMSE: 7.48
+  MAE: 5.11
+  MAPE: 6.36%
+  Accuracy: 93.64%
+  Training Time: 0.033s
+  Inference Time: 0.000ms
+
+XGBoost Regressor (Improved Hyperparameters):
+  R² Score: 0.9636
+  RMSE: 7.84
+  MAE: 5.35
+  MAPE: 6.61%
+  Accuracy: 93.39%
+  Training Time: 0.944s
+  Inference Time: 0.002ms
+
+Comparison for COD:
+Metric               Linear Reg      XGBoost         Winner         
+-----------------------------------------------------------------
+R² Score             0.9669           0.9636           Linear         
+RMSE (lower=better)  7.48           7.84           Linear         
+MAE (lower=better)   5.11           5.35           Linear         
+Accuracy             93.64%           93.39%           Linear         
+
+[OK] WINNER for COD: Linear Regression (Better on 4/4 metrics)
+
+
+
+Overall Performance Summary:
+  Linear Regression (Polynomial):
+    - Average R² Score: 0.9079
+    - Average Accuracy: 15.25%
+  XGBoost (Improved):
+    - Average R² Score: 0.9687
+    - Average Accuracy: 89.51%
+
+[OK] WINNER: XGBoost Regressor
+
+Average Accuracy: 89.51% vs 15.25%
+Accuracy Improvement: +74.26%
+
+[OK] RECOMMENDATION: Use XGBoost for production deployment
+
+1. CLASSIFICATION: Use Random Forest Classifier
+   - Accuracy: 89.36%
+   - F1-Score (Weighted): 0.8938
+   - Inference Time: 0.01 ms/sample
+
+2. REGRESSION: Use Linear Regression for TDS, BOD, COD
+   - Average R² Score: 0.9079
+   - Average Accuracy: 15.25%
+
+================================================================================
+END OF COMPARISON REPORT
+================================================================================

@@ -1,0 +1,168 @@
+{
+  "stats": [
+    {
+      "title": "Water Quality Index",
+      "value": "Poor",
+      "status": "Needs Improvement",
+      "icon": "\ud83c\udf0a",
+      "color": "from-red-500 to-orange-600",
+      "bgColor": "bg-red-50",
+      "textColor": "text-red-600",
+      "trend": "15364 samples"
+    },
+    {
+      "title": "pH Level",
+      "value": "7.5",
+      "status": "Normal Range",
+      "icon": "\u2697\ufe0f",
+      "color": "from-green-500 to-emerald-600",
+      "bgColor": "bg-green-50",
+      "textColor": "text-green-600",
+      "trend": "\u21910.0"
+    },
+    {
+      "title": "Temperature",
+      "value": "27.5\u00b0C",
+      "status": "Optimal",
+      "icon": "\ud83c\udf21\ufe0f",
+      "color": "from-orange-500 to-red-500",
+      "bgColor": "bg-orange-50",
+      "textColor": "text-orange-600",
+      "trend": "\u21930.0\u00b0C"
+    },
+    {
+      "title": "Dissolved Oxygen",
+      "value": "5.5",
+      "status": "Good",
+      "icon": "\ud83d\udca8",
+      "color": "from-blue-500 to-purple-600",
+      "bgColor": "bg-blue-50",
+      "textColor": "text-blue-600",
+      "trend": "\u21910.0mg/L"
+    },
+    {
+      "title": "Total Dissolved Solids",
+      "value": "2560",
+      "status": "Poor",
+      "icon": "\ud83d\udd2c",
+      "color": "from-red-500 to-pink-600",
+      "bgColor": "bg-red-50",
+      "textColor": "text-red-600",
+      "trend": "\u219115ppm"
+    },
+    {
+      "title": "BOD Level",
+      "value": "10.6",
+      "status": "Moderate",
+      "icon": "\u2728",
+      "color": "from-indigo-500 to-purple-600",
+      "bgColor": "bg-indigo-50",
+      "textColor": "text-indigo-600",
+      "trend": "10.6mg/L"
+    }
+  ],
+  "trendData": [
+    {
+      "day": "Mon",
+      "wqi": 37,
+      "pH": 7.7,
+      "DO": 2.5,
+      "temp": 26.2
+    },
+    {
+      "day": "Tue",
+      "wqi": 42,
+      "pH": 8.5,
+      "DO": 5.0,
+      "temp": 21.5
+    },
+    {
+      "day": "Wed",
+      "wqi": 35,
+      "pH": 6.3,
+      "DO": 4.7,
+      "temp": 27.7
+    },
+    {
+      "day": "Thu",
+      "wqi": 43,
+      "pH": 8.9,
+      "DO": 2.9,
+      "temp": 25.9
+    },
+    {
+      "day": "Fri",
+      "wqi": 30,
+      "pH": 9.0,
+      "DO": 1.8,
+      "temp": 25.3
+    },
+    {
+      "day": "Sat",
+      "wqi": 50,
+      "pH": 7.5,
+      "DO": 3.5,
+      "temp": 35.1
+    },
+    {
+      "day": "Sun",
+      "wqi": 49,
+      "pH": 6.2,
+      "DO": 4.2,
+      "temp": 31.3
+    }
+  ],
+  "pollutionData": [
+    {
+      "location": "Bandra",
+      "pollution": 20,
+      "bod": 10.5,
+      "cod": 103.8,
+      "tds": 2564
+    },
+    {
+      "location": "Kurla",
+      "pollution": 20,
+      "bod": 10.5,
+      "cod": 103.8,
+      "tds": 2569
+    },
+    {
+      "location": "Mahim",
+      "pollution": 21,
+      "bod": 10.6,
+      "cod": 105.0,
+      "tds": 2599
+    },
+    {
+      "location": "Powai",
+      "pollution": 21,
+      "bod": 10.7,
+      "cod": 104.3,
+      "tds": 2565
+    },
+    {
+      "location": "Saki Naka",
+      "pollution": 21,
+      "bod": 10.6,
+      "cod": 105.9,
+      "tds": 2505
+    }
+  ],
+  "datasetInfo": {
+    "total_records": 400000,
+    "year_range": "2000 - 2024",
+    "locations": 5,
+    "latest_year": 2024,
+    "parameters_monitored": [
+      "Temperature",
+      "DO",
+      "pH",
+      "TDS",
+      "BOD",
+      "COD",
+      "WQI"
+    ]
+  },
+  "generatedAt": "2025-10-09T10:25:15.300992"
+}

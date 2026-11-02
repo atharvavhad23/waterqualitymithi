@@ -1,0 +1,78 @@
+{
+  "architecture": "CEEMDAN-Attention-BiLSTM-XGBoost",
+  "decomposition": "moving_average_residual_fallback",
+  "config": {
+    "window_size": 6,
+    "sample_rows": 20000,
+    "epochs": 8,
+    "batch_size": 128,
+    "learning_rate": 0.001,
+    "hidden_size": 32,
+    "attention_size": 32,
+    "selected_features": 5,
+    "random_seed": 42
+  },
+  "selected_features_classification": [
+    "BOD",
+    "COD",
+    "TDS",
+    "DO",
+    "pH"
+  ],
+  "selected_features_regression": [
+    "COD",
+    "BOD",
+    "TDS",
+    "DO",
+    "pH"
+  ],
+  "labels": [
+    "Good",
+    "Moderate",
+    "Poor"
+  ],
+  "classification": {
+    "accuracy": 0.709279038718291,
+    "macro_f1": 0.6049130653698932,
+    "weighted_f1": 0.7101123295308441,
+    "report": {
+      "0": {
+        "precision": 0.4857142857142857,
+        "recall": 0.3541666666666667,
+        "f1-score": 0.40963855421686746,
+        "support": 48.0
+      },
+      "1": {
+        "precision": 0.772857964347326,
+        "recall": 0.74090407938258,
+        "f1-score": 0.7565437658316916,
+        "support": 1814.0
+      },
+      "2": {
+        "precision": 0.6252045826513911,
+        "recall": 0.673721340388007,
+        "f1-score": 0.6485568760611206,
+        "support": 1134.0
+      },
+      "accuracy": 0.709279038718291,
+      "macro avg": {
+        "precision": 0.6279256109043342,
+        "recall": 0.5895973621457512,
+        "f1-score": 0.6049130653698932,
+        "support": 2996.0
+      },
+      "weighted avg": {
+        "precision": 0.7123700366378547,
+        "recall": 0.709279038718291,
+        "f1-score": 0.7101123295308441,
+        "support": 2996.0
+      }
+    }
+  },
+  "regression": {
+    "mae": 28.2221736907959,
+    "rmse": 50.32793096050766,
+    "r2": 0.25378867983818054
+  },
+  "selection_rule": "XGBoost classification by macro-F1; XGBoost regression by lowest RMSE and highest R2."
+}

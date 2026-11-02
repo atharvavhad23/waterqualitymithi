@@ -1,0 +1,14 @@
+# Environment secrets
+.env
+
+# Python cache and env
+__pycache__/
+*.py[cod]
+venv/
+
+# SQLite files (use Postgres in prod)
+*.sqlite3
+db.sqlite3
+
+# Node modules (server side)
+node_modules/

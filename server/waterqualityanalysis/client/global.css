@@ -1,0 +1,32 @@
+:root {
+  --primary-color: #1d4ed8; /* Example primary color */
+  --secondary-color: #fbbf24; /* Example secondary color */
+  --background-color: #f9fafb; /* Example background color */
+  --text-color: #111827; /* Example text color */
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global styles */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: 'Inter', sans-serif; /* Example font */
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Add any additional global styles below */
