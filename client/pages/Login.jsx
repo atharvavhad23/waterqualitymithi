@@ -379,6 +379,31 @@ export default function Login() {
               </div>
             </Button>
 
+            {/* Quick Viva / Demo One-Click Access */}
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                setUsername("admin");
+                setPassword("admin123");
+                localStorage.setItem('token', 'admin-viva-token-' + Date.now());
+                localStorage.setItem('role', 'admin');
+                localStorage.setItem('user', JSON.stringify({
+                  id: 'admin',
+                  username: 'admin',
+                  email: 'admin@mithiriver.com',
+                  name: 'System Administrator',
+                  role: 'admin'
+                }));
+                toast.success("Welcome! Signed in with Viva Admin credentials.");
+                navigate('/dashboard');
+              }}
+              className="w-full border-blue-200 bg-blue-50/80 hover:bg-blue-100 text-blue-800 font-semibold py-2.5 rounded-xl transition-all shadow-sm flex items-center justify-center gap-2"
+            >
+              <span>🎓</span>
+              <span>Quick Viva / Demo Sign In (Full Access)</span>
+            </Button>
+
             <div className="flex flex-col space-y-4 text-center text-sm animate-fadeIn animation-delay-1000">
               <Link 
                 to="/forgot-password" 

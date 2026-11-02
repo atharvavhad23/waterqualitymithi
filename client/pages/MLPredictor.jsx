@@ -97,8 +97,8 @@ export default function MLPredictor() {
                 <tbody>
                   <tr className="border-b">
                     <td className="py-3 px-4 font-medium">Parameters</td>
-                    <td className="py-3 px-4 text-center">8</td>
-                    <td className="py-3 px-4 text-center">5</td>
+                    <td className="py-3 px-4 text-center">8 Parameters</td>
+                    <td className="py-3 px-4 text-center">5 Parameters</td>
                   </tr>
                   <tr className="border-b">
                     <td className="py-3 px-4 font-medium">Output</td>
@@ -106,14 +106,14 @@ export default function MLPredictor() {
                     <td className="py-3 px-4 text-center">WQI + TDS, BOD, COD</td>
                   </tr>
                   <tr className="border-b">
-                    <td className="py-3 px-4 font-medium">Accuracy</td>
-                    <td className="py-3 px-4 text-center">99.85%</td>
-                    <td className="py-3 px-4 text-center">99%+</td>
+                    <td className="py-3 px-4 font-medium">Validation Metric</td>
+                    <td className="py-3 px-4 text-center font-bold text-green-700">89.36% (0.91 Macro F1)</td>
+                    <td className="py-3 px-4 text-center font-bold text-blue-700">R² &gt; 0.96 (BOD/COD/TDS)</td>
                   </tr>
                   <tr>
                     <td className="py-3 px-4 font-medium">Best For</td>
-                    <td className="py-3 px-4 text-center">Policy Decisions</td>
-                    <td className="py-3 px-4 text-center">Research</td>
+                    <td className="py-3 px-4 text-center">Policy Decisions & Alerting</td>
+                    <td className="py-3 px-4 text-center">Forecasting & Research</td>
                   </tr>
                 </tbody>
               </table>

@@ -13,20 +13,22 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { VisuallyHidden } from "@/components/ui/visually-hidden";
-import { Waves, Home, FileText, Map, Calendar, Newspaper, LogOut, Menu, Sun, Moon, Users, Search, Shield, Download, BarChart3 } from "lucide-react";
+import { Waves, Home, FileText, Map, Calendar, Newspaper, LogOut, Menu, Sun, Moon, Users, Search, Shield, Download, BarChart3, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navigation = [
-  { name: "🏠 Home", href: "/dashboard", icon: Home },
-  { name: "🤖 ML Analytics", href: "/dashboard/ml-predictor", icon: FileText },
-  { name: "🧠 AI Analytics", href: "/dashboard/ai-analytics", icon: FileText },
+  { name: "🏠 Overview", href: "/dashboard", icon: Home },
+  { name: "🤖 ML Predictor", href: "/dashboard/ml-predictor", icon: FileText },
+  { name: "🧠 AI Analytics", href: "/dashboard/ai-analytics", icon: BarChart3 },
   { name: "🏷️ WQI Classifier", href: "/dashboard/wqi-classifier", icon: FileText },
-  { name: "🔮 Linear Regression", href: "/dashboard/linear-regression", icon: FileText },
+  { name: "🔮 Regression Models", href: "/dashboard/linear-regression", icon: FileText },
   { name: "🗺️ GIS Mapping", href: "/dashboard/gis-mapping", icon: Map },
-  { name: "📊 Reports", href: "/dashboard/reports", icon: FileText },
-  { name: "🌿 Cleanup Info", href: "/dashboard/cleanup", icon: Calendar },
-  { name: "🌊 Register for Drives", href: "/dashboard/cleanup-drives", icon: Calendar },
-  { name: "📰 Blog & News", href: "/dashboard/news", icon: Newspaper },
+  { name: "⚡ Advanced 3D & Sensors", href: "/dashboard/advanced-features", icon: Sparkles },
+  { name: "📈 Model Performance", href: "/dashboard/model-performance", icon: BarChart3 },
+  { name: "📊 Citizen Reports", href: "/dashboard/reports", icon: FileText },
+  { name: "🌿 River Restoration", href: "/dashboard/cleanup", icon: Calendar },
+  { name: "🌊 Cleanup Drives", href: "/dashboard/cleanup-drives", icon: Calendar },
+  { name: "📰 Environmental News", href: "/dashboard/news", icon: Newspaper },
 ];
 
 const adminNavigation = [
@@ -160,21 +162,7 @@ export default function DashboardLayout({ children, demoMode = false }) {
             {navigation.map((item) => {
               const isActive = location.pathname === item.href;
               
-              if (demoMode && item.href !== "/dashboard") {
-                return (
-                  <button
-                    key={item.href}
-                    onClick={showDemoAlert}
-                    className={cn(
-                      "group relative flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 w-full text-left",
-                      "text-blue-700 hover:bg-white/40 hover:text-blue-900 hover:scale-105"
-                    )}
-                  >
-                    <item.icon className="w-5 h-5 transition-transform group-hover:scale-110" />
-                    <span>{item.name}</span>
-                  </button>
-                );
-              }
+
               
               return (
                 <Link
@@ -269,21 +257,7 @@ export default function DashboardLayout({ children, demoMode = false }) {
               {navigation.map((item) => {
                 const isActive = location.pathname === item.href;
                 
-                if (demoMode && item.href !== "/dashboard") {
-                  return (
-                    <button
-                      key={item.href}
-                      onClick={showDemoAlert}
-                      className={cn(
-                        "flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 w-full text-left",
-                        "text-blue-700 hover:bg-white/40 hover:text-blue-900"
-                      )}
-                    >
-                      <item.icon className="w-5 h-5" />
-                      <span>{item.name}</span>
-                    </button>
-                  );
-                }
+
                 
                 return (
                   <Link
