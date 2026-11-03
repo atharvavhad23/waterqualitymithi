@@ -342,8 +342,28 @@ def login(request):
     username = request.data.get('username')
     password = request.data.get('password')
     
-    if not username or not password:
-        return Response({'message': 'Username and password are required.'}, status=status.HTTP_400_BAD_REQUEST)
+    if not username:
+        return Response({'message': 'Username is required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Universal Demo account fallback: instantly login demo user with any password
+    if username.strip().lower() == 'demo':
+        demo_user = User.objects.filter(username='demo').first()
+        if not demo_user:
+            demo_user = User.objects.create_user(username='demo', email='demo@mithiriver.com')
+        token, _ = Token.objects.get_or_create(user=demo_user)
+        return Response({
+            'token': token.key,
+            'user': {
+                'id': demo_user.id,
+                'username': demo_user.username,
+                'email': demo_user.email,
+                'role': 'admin'
+            },
+            'message': 'Login successful (Demo Mode)'
+        }, status=status.HTTP_200_OK)
+    
+    if not password:
+        return Response({'message': 'Password is required.'}, status=status.HTTP_400_BAD_REQUEST)
     
     # Try to authenticate with username first
     user = authenticate(username=username, password=password)

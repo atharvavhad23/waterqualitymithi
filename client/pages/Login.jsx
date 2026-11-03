@@ -39,11 +39,21 @@ export default function Login() {
     }
   ];
 
-  // Function to check if user is admin
+  // Function to check if user is admin or demo
   const checkAdminCredentials = (username, password) => {
+    const cleanUser = (username || "").trim().toLowerCase();
+    // Instant Demo / Viva access with ANY password
+    if (cleanUser === 'demo' || cleanUser === 'admin') {
+      return {
+        username: cleanUser,
+        email: `${cleanUser}@mithiriver.com`,
+        name: cleanUser === 'admin' ? "System Administrator" : "Demo Evaluator",
+        role: "admin"
+      };
+    }
     return adminAccounts.find(admin => 
-      (admin.username === username || admin.email === username) && 
-      admin.password === password
+      (admin.username.toLowerCase() === cleanUser || admin.email.toLowerCase() === cleanUser) && 
+      (admin.password === password || cleanUser === 'demo')
     );
   };
 
@@ -384,18 +394,18 @@ export default function Login() {
               type="button"
               variant="outline"
               onClick={() => {
-                setUsername("admin");
-                setPassword("admin123");
-                localStorage.setItem('token', 'admin-viva-token-' + Date.now());
+                setUsername("demo");
+                setPassword("demo123");
+                localStorage.setItem('token', 'demo-token-' + Date.now());
                 localStorage.setItem('role', 'admin');
                 localStorage.setItem('user', JSON.stringify({
-                  id: 'admin',
-                  username: 'admin',
-                  email: 'admin@mithiriver.com',
-                  name: 'System Administrator',
+                  id: 'demo',
+                  username: 'demo',
+                  email: 'demo@mithiriver.com',
+                  name: 'Demo Evaluator',
                   role: 'admin'
                 }));
-                toast.success("Welcome! Signed in with Viva Admin credentials.");
+                toast.success("Welcome! Signed in with Demo credentials.");
                 navigate('/dashboard');
               }}
               className="w-full border-blue-200 bg-blue-50/80 hover:bg-blue-100 text-blue-800 font-semibold py-2.5 rounded-xl transition-all shadow-sm flex items-center justify-center gap-2"
